@@ -2,8 +2,8 @@
 using UnityEngine;
 using System.Collections;
 
-[CustomEditor(typeof(TileMap))]
-public class TileMapInspector : Editor {
+[CustomEditor(typeof(TGMap))]
+public class TGMapInspector : Editor {
 
     public override void OnInspectorGUI()
     {
@@ -11,7 +11,7 @@ public class TileMapInspector : Editor {
 
         if(GUILayout.Button("Reconstruct"))
         {
-            TileMap tilemap = (TileMap)target;
+            TGMap tilemap = (TGMap)target;
             tilemap.ConstructMesh();
         }
     }
