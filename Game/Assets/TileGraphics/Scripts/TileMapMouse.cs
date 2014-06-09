@@ -30,7 +30,7 @@ public class TileMapMouse : MonoBehaviour {
 			selectionCube.transform.position = currentTileCoord;
 
             if(Input.GetMouseButtonDown(0)) {
-                _tileMap.tdMap.GetTileAt(x, z).type = TDTile.TILE_STONE;
+                //_tileMap.tdMap.GetTileAt(x, z).type = TDTile.TILE_STONE;
 		    }
 		}
 		else {
