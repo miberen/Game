@@ -20,26 +20,44 @@ public class TileMap : MonoBehaviour {
 
 	}
 
+
+
 	// Update is called once per frame
 	void Update () {
 	
 	}
 
-    void ConstructTexture()
+    Color[][] SliceMap()
     {
         int numRows = terrainTiles.height / tileResolution;
-        int numTilesRow = terrainTiles.width / tileResolution;      
+        int numTilesRow = terrainTiles.width / tileResolution;
 
+        Color[][] tiles = new Color[numTilesRow*numRows][];
+
+        for (int y = 0; y < numRows; y++) {
+            for( int x = 0; x < numTilesRow; x++) {
+                tiles[y*numTilesRow + x] = terrainTiles.GetPixels(x * tileResolution, y * tileResolution, tileResolution, tileResolution);
+            }
+        }
+
+        return tiles;
+    }
+
+    void ConstructTexture()
+    {
         int texWidth = sizeX * tileResolution;
         int texHeight = sizeZ * tileResolution;
         Texture2D tex = new Texture2D(texWidth,texHeight);
 
-        for(int y = 0; y < texHeight; y++){
-            for(int x = 0; x < texWidth; x++){
-                Color c = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-                tex.SetPixel(x, y, c);
+        Color[][] tiles = SliceMap();
+
+        for(int y = 0; y < sizeZ; y++){
+            for(int x = 0; x < sizeX; x++){
+                Color[] p = tiles[Random.Range(0,4)];
+                tex.SetPixels(x*tileResolution, y*tileResolution, tileResolution, tileResolution, p);
             }
         }
+
         tex.filterMode = FilterMode.Point;
         tex.wrapMode = TextureWrapMode.Clamp;
         tex.Apply();
