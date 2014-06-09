@@ -11,6 +11,9 @@ public class TileMap : MonoBehaviour {
     public int sizeZ = 100;
     public float tileSize = 1.0f;
 
+    public Texture2D terrainTiles;
+    public int tileResolution;
+
 	// Use this for initialization
 	void Start () {
         ConstructMesh();
@@ -24,8 +27,11 @@ public class TileMap : MonoBehaviour {
 
     void ConstructTexture()
     {
-        int texWidth = sizeX;
-        int texHeight = sizeZ;
+        int numRows = terrainTiles.height / tileResolution;
+        int numTilesRow = terrainTiles.width / tileResolution;      
+
+        int texWidth = sizeX * tileResolution;
+        int texHeight = sizeZ * tileResolution;
         Texture2D tex = new Texture2D(texWidth,texHeight);
 
         for(int y = 0; y < texHeight; y++){
