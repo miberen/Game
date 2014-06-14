@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //[ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter))]
@@ -14,7 +15,7 @@ public class TGMap : MonoBehaviour {
 	public Texture2D terrainTiles;
 	public int tileResolution;
 
-    ArrayList walls = new ArrayList();
+    List<Object> walls = new List<Object>();
     TDMap tdMap;
 
 	// Use this for initialization
