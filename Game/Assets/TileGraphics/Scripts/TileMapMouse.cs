@@ -21,7 +21,7 @@ public class TileMapMouse : MonoBehaviour {
 		
 		if( collider.Raycast( ray, out hitInfo, Mathf.Infinity ) ) {
 			int x = Mathf.FloorToInt( hitInfo.point.x / _tileMap.tileSize);
-			int z = Mathf.CeilToInt( hitInfo.point.z / _tileMap.tileSize);
+			int z = Mathf.FloorToInt( hitInfo.point.z / _tileMap.tileSize);
 			Debug.Log ("Tile: " + x + ", " + z);
 			
 			currentTileCoord.x = x;

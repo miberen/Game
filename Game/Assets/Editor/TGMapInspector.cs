@@ -14,5 +14,17 @@ public class TGMapInspector : Editor {
             TGMap tilemap = (TGMap)target;
             tilemap.ConstructMesh();
         }
+
+        if (GUILayout.Button("Build Walls"))
+        {
+            TGMap tilemap = (TGMap)target;
+            tilemap.ConstructWalls();
+        }
+
+        if (GUILayout.Button("Delete Walls"))
+        {
+            TGMap tilemap = (TGMap)target;
+            tilemap.RemoveWallsEditor();
+        }
     }
 }

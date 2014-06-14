@@ -1,13 +1,15 @@
 ﻿public class TDTile {
+    public enum TILES
+    {
+        UNEXPLORED = 0,
+        FLOOR = 1,
+        WALL = 2,
+        STONE = 3
+    }
 
-    public const int TILE_UNEXPLORED = 0;
-    public const int TILE_FLOOR = 1;
-    public const int TILE_WALL = 2;
-    public const int TILE_STONE = 3;
+    public TILES type;
 
-    public int type;
-
-    public TDTile(int t)
+    public TDTile(TILES t)
     {
         type = t;
     }

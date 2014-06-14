@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+
 public class TDMap {
 
     protected class DRoom
@@ -59,7 +60,7 @@ public class TDMap {
 
         for (int x = 0; x < _width * _height; x++ )
         {
-            _tiles[x] = new TDTile(TDTile.TILE_STONE);
+            _tiles[x] = new TDTile(TDTile.TILES.UNEXPLORED);
         }
 
         for (int i = 0; i < 10; i++)
@@ -108,11 +109,11 @@ public class TDMap {
             {
                 if (x == 0 || x == r.width - 1 || y == 0 || y == r.height - 1)
                 {
-                    _tiles[y * _width + x + r.top * _width + r.left].type = TDTile.TILE_WALL;
+                    _tiles[y * _width + x + r.top * _width + r.left].type = TDTile.TILES.WALL;
                 }
                 else
                 {
-                    _tiles[y * _width + x + r.top * _width + r.left].type = TDTile.TILE_FLOOR;
+                    _tiles[y * _width + x + r.top * _width + r.left].type = TDTile.TILES.STONE;
                 }
                 
                 

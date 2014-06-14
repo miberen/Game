@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
@@ -13,6 +13,9 @@ public class TGMap : MonoBehaviour {
 	
 	public Texture2D terrainTiles;
 	public int tileResolution;
+
+    ArrayList walls = new ArrayList();
+    TDMap tdMap;
 
 	// Use this for initialization
 	void Start () {
@@ -37,8 +40,9 @@ public class TGMap : MonoBehaviour {
         return tiles;
 	}
 	
-	void ConstructTexture() {
-		TDMap tdMap = new TDMap(size_x, size_z);
+	void ConstructTexture() 
+    {
+		tdMap = new TDMap(size_x, size_z);
 
         int texWidth = size_x * tileResolution;
         int texHeight = size_z * tileResolution;
@@ -50,7 +54,7 @@ public class TGMap : MonoBehaviour {
         {
             for (int x = 0; x < size_x; x++)
             {
-                Color[] p = tiles[tdMap.GetTileAt(x,y).type];
+                Color[] p = tiles[(int)tdMap.GetTileAt(x,y).type];
                 texture.SetPixels(x * tileResolution, y * tileResolution, tileResolution, tileResolution, p);
             }
         }
@@ -64,8 +68,57 @@ public class TGMap : MonoBehaviour {
 
         Debug.Log("Done Texture!");
 	}
+
+    public void ConstructWalls()
+    {       
+        GameObject prefab;
+
+        RemoveWalls();
+
+        for (int z = 0; z < size_z; z++)
+        {
+            for (int x = 0; x < size_x; x++)
+            {              
+                if(tdMap.GetTileAt(x,z).type == TDTile.TILES.UNEXPLORED)
+                {
+                    prefab = (GameObject)Resources.Load("Prefabs/WallUnexplored");
+                    walls.Add(Instantiate(prefab, new Vector3(x, 0, z), Quaternion.identity));
+                }
+                else if(tdMap.GetTileAt(x,z).type == TDTile.TILES.WALL)
+                {
+                    prefab = (GameObject)Resources.Load("Prefabs/WallDirt");
+                    walls.Add(Instantiate(prefab, new Vector3(x, 0, z), Quaternion.identity));
+                }
+                else if (tdMap.GetTileAt(x, z).type == TDTile.TILES.STONE)
+                {
+                    prefab = (GameObject)Resources.Load("Prefabs/FloorStone");
+                    walls.Add(Instantiate(prefab, new Vector3(x, 0, z), Quaternion.identity));
+                }
+            }
+        }
+        Debug.Log("Done Walls!");
+    }
+
+    public void RemoveWalls()
+    {
+        for(int x = 0; x < walls.Count; x++)
+        {
+            Destroy((GameObject)walls[x]);
+        }
+        walls.Clear();
+    }
+
+    public void RemoveWallsEditor()
+    {
+        for (int x = 0; x < walls.Count; x++)
+        {
+            DestroyImmediate((GameObject)walls[x]);
+        }
+        walls.Clear();
+    }
 	
-	public void ConstructMesh() {
+	public void ConstructMesh() 
+    {
 
 		int numTiles = size_x * size_z;
 		int numTris = numTiles * 2;
@@ -84,9 +137,9 @@ public class TGMap : MonoBehaviour {
 		int x, z;
 		for(z=0; z < vsize_z; z++) {
 			for(x=0; x < vsize_x; x++) {
-				vertices[ z * vsize_x + x ] = new Vector3( x*tileSize, 0, -z*tileSize );
+				vertices[ z * vsize_x + x ] = new Vector3( x*tileSize, 0, z*tileSize );
 				normals[ z * vsize_x + x ] = Vector3.up;
-				uv[ z * vsize_x + x ] = new Vector2( (float)x / size_x, 1f - (float)z / size_z );
+                uv[z * vsize_x + x] = new Vector2((float)x / size_x, (float)z / size_z);
 			}
 		}
 		Debug.Log ("Done Verts!");
@@ -96,12 +149,12 @@ public class TGMap : MonoBehaviour {
 				int squareIndex = z * size_x + x;
 				int triOffset = squareIndex * 6;
 				triangles[triOffset + 0] = z * vsize_x + x + 		   0;
-				triangles[triOffset + 2] = z * vsize_x + x + vsize_x + 0;
-				triangles[triOffset + 1] = z * vsize_x + x + vsize_x + 1;
+				triangles[triOffset + 1] = z * vsize_x + x + vsize_x + 0;
+				triangles[triOffset + 2] = z * vsize_x + x + vsize_x + 1;
 				
 				triangles[triOffset + 3] = z * vsize_x + x + 		   0;
-				triangles[triOffset + 5] = z * vsize_x + x + vsize_x + 1;
-				triangles[triOffset + 4] = z * vsize_x + x + 		   1;
+				triangles[triOffset + 4] = z * vsize_x + x + vsize_x + 1;
+				triangles[triOffset + 5] = z * vsize_x + x + 		   1;
 			}
 		}
 		
